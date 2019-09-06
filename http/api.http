@@ -1,0 +1,45 @@
+###
+GET http://{{host}}/v1/board/
+Content-Type: application/json
+
+###
+PUT http://{{host}}/v1/board/save
+Content-Type: application/json
+
+{
+  "title": "제목1",
+  "content": "내용1"
+}
+
+###
+PUT http://{{host}}/v1/board/save
+Content-Type: application/json
+
+{
+  "title": "제목1"
+}
+
+###
+POST http://{{host}}/v1/board/1/updated
+Content-Type: application/json
+
+{
+  "title": "제목2",
+  "content": "내용2"
+}
+
+###
+POST http://{{host}}/v1/board//updated
+Content-Type: application/json
+
+{
+  "title": "제목2",
+  "content": "내용2"
+}
+
+###
+DELETE http://{{host}}/v1/board/2/deleted
+Content-Type: application/json
+
+
+###

@@ -1,0 +1,144 @@
+openapi: 3.0.0
+servers:
+  - description: localhost
+    url: http://localhost:8080/v1
+
+info:
+  version: "1.0.0"
+  title: OpenApi Demo
+  description: >-
+security:
+  - Oauth2:
+      - all
+paths:
+  /board/:
+    get:
+      tags:
+        - board
+      summary: Board 목록 조회
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Board"
+        '500':
+          $ref: "#/components/responses/InternalServerError"
+  /board/save:
+    put:
+      tags:
+        - board
+      summary: Board 등록
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BoardCreate"
+      responses:
+        '200':
+          description: OK
+        '500':
+          $ref: "#/components/responses/InternalServerError"
+  /board/{id}/updated:
+    post:
+      tags:
+        - board
+      summary: Board 수정
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+            format: int64
+          required: true
+          description: Board ID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BoardCreate"
+      responses:
+        '200':
+          description: OK
+        '500':
+          $ref: "#/components/responses/InternalServerError"
+  /board/{id}/deleted:
+    delete:
+      tags:
+        - board
+      summary: Board 삭제
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+            format: int64
+          required: true
+          description: Board ID
+      responses:
+        '200':
+          description: OK
+        '500':
+          $ref: "#/components/responses/InternalServerError"
+components:
+  responses:
+    InternalServerError:
+      description: Interner Server Error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    IllegalInput:
+      description: "필수값 오류"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+  schemas:
+    Error:
+      type: object
+      required:
+        - code
+      properties:
+        code:
+          type: string
+          example: "Error code Or Error field"
+        message:
+          type: string
+          example: "Error Message"
+    Board:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        title:
+          type: string
+          example: "제목!!!!"
+        content:
+          type: string
+          example: "내용!!!!!!!"
+        created:
+          type: string
+          format: date-time
+          example: "2019-09-02 17:27:55.419Z"
+        updated:
+          type: string
+          format: date-time
+          example: "2019-09-02 17:27:55.419Z"
+    BoardCreate:
+      type: object
+      required:
+        - title
+        - content
+      properties:
+        title:
+          type: string
+          example: "제목!!!!"
+        content:
+          type: string
+          example: "내용!!!!!!!"
